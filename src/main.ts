@@ -1,10 +1,13 @@
 import 'reflect-metadata'
 
 import { Container } from './lib/container'
-import './style.css'
 import { Example } from './mock/example'
-
+import { NoDependency } from './mock/NoDependency'
 
 const container = new Container()
+container.register(NoDependency, () => new NoDependency())
+container.bind(Example)
+const i = container.make(Example)
+i?.sayHi("s")
 
-container.register(Example, () => new Example("gay"))
+

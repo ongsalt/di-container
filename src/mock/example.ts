@@ -1,10 +1,11 @@
-import { LogMethod } from "../lib/decorator";
+import { Inject } from "../lib/decorator/inject";
+import { NoDependency } from "./NoDependency";
 
+@Inject()
 export class Example {
-    constructor(private name: string) {}
+    constructor(private name: NoDependency) {}
 
-    @LogMethod
     sayHi(a: string) {
-        console.log(`Hi ${this.name} ${a}!`)
+        console.log(`Hi ${this.name.makeString()} ${a}!`)
     }
 }
