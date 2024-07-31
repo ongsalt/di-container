@@ -1,6 +1,6 @@
 import { Inject } from "../lib/decorator/inject";
 
-@Inject()
+// @Inject()
 export class NoDependency {
     makeString() {
         return "fjsdkyugjhHb,k"
