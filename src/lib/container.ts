@@ -9,6 +9,7 @@ interface Resolver {
     make<T = any>(key: new () => T | any): T | undefined
 }
 
+// todo: named instance, singleton
 export class Container implements Resolver {
     // Literally anything can be threre
     private instances = new Map<Constructor<unknown>, any>()
@@ -31,15 +32,21 @@ export class Container implements Resolver {
         if (initializer) {
             // console.log(`[make] initializing ${key.name}`)
             const instance = initializer(this) as T
-            this.initializers.delete(key)
             this.instances.set(key, instance)
             return instance
         }
         throw new Error(`Class ${keyOrAlias} not found`)
     }
 
-    // for auto inject
     bind<T>(clazz: Constructor<T>) {
+        this._bind(clazz, false)
+    }
+
+    singleton<T>(clazz: Constructor<T>) {
+        this._bind(clazz, true)
+    }
+
+    private  _bind<T>(clazz: Constructor<T>, singleton = false) {
         if (!this.canBeInjected(clazz)) {
             throw new Error(`Class ${clazz.name} can not be auto injected.`)
         }
@@ -49,13 +56,13 @@ export class Container implements Resolver {
         const initializer = () => {
             const params = dependencies.map(it => {
                 // todo: alias lookup
-                if (this.instances.has(it)) {
+                if (this.instances.has(it) && singleton) {
                     return this.instances.get(it)
                 } else if  (this.initializers.has(it)) {
                     return this.make(it)!
                 }  else if (this.canBeInjected(it)) {
                     // recursively bind dependencies
-                    this.bind(it)
+                    this._bind(it, singleton)
                     return this.make(it)
                 } else {
                     if (it.name === "Object") {

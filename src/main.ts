@@ -10,4 +10,8 @@ container.bind(Example)
 const i = container.make(Example)
 i?.sayHi("s")
 
+const j = container.make(Example)
+j?.sayHi("s")
+
+
 
