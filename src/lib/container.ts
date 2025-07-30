@@ -1,7 +1,7 @@
 import { INJECT } from "./constant"
 
 type Initializer<T = unknown> = (resolver: Resolver) => T
-type Constructor<T> = new (...params: any[]) => T
+export type Constructor<T> = new (...params: any[]) => T
 // type Key<T> = Constructor<T> | string | symbol
 type Key<T> = Constructor<T>
 

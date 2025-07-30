@@ -1,16 +1,16 @@
-import 'reflect-metadata'
+import 'reflect-metadata';
 
-import { Container } from './lib/container'
-import { Example } from './mock/example'
-import { NoDependency } from './mock/NoDependency'
+import { Container } from './lib/container';
+import { Example } from './mock/example';
+import { NoDependency } from './mock/NoDependency';
 
-const container = new Container()
-container.register(NoDependency, resolver => new NoDependency())
-container.bind(Example)
-const i = container.make(Example)
-i?.sayHi("s")
+const container = new Container();
+container.register(NoDependency, resolver => new NoDependency());
+container.bind(Example);
+const i = container.make(Example);
+i?.sayHi("s");
 
-const j = container.make(Example)
+const j = container.make(Example);
 j?.sayHi("s")
 
 
